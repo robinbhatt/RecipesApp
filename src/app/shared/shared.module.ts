@@ -4,10 +4,16 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RecipeFormComponent } from './components/recipe-form/recipe-form.component';
+import { SingleRecipeComponent } from './components/single-recipe/single-recipe.component';
+import { SingleRecipeModalComponent } from './components/single-recipe-modal/single-recipe-modal.component';
 
 const sharedExport = [
   LoadingSpinnerComponent,
-
+  SingleRecipeComponent,
+  RecipeFormComponent,
+  SingleRecipeModalComponent,
+  
   AngularMaterialModule,
   FormsModule,
   ReactiveFormsModule,
@@ -16,7 +22,10 @@ const sharedExport = [
 
 @NgModule({
   declarations: [
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    RecipeFormComponent,
+    SingleRecipeComponent,
+    SingleRecipeModalComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +33,7 @@ const sharedExport = [
     FormsModule,
     ReactiveFormsModule
   ],
-  exports:[ sharedExport  ]
+  exports:[ sharedExport ]
 
 })
 export class SharedModule { }

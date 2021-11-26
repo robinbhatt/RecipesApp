@@ -1,0 +1,44 @@
+
+<div class="login-container">
+    <div class="login-content">
+
+
+        <mat-card>
+            <mat-toolbar class="login-toolbar" style="background-color:white"><strong> Recipe Form </strong></mat-toolbar><br>
+
+            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+
+                <mat-form-field>
+                    <input type="email" autocomplete="true" matInput placeholder="Email" formControlName="email">
+                        <mat-error *ngIf="formError.email.errors?.required">Recipe Name is required</mat-error>
+                        <mat-error *ngIf="formError.email.errors?.minlength">Minimum length should be minimum 5 character</mat-error>
+                        <mat-error *ngIf="formError.email.errors?.email">Email should be in the <i><u>username@domain.com</u></i> format </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input type="password" autocomplete="false" matInput placeholder="Password"formControlName="password">
+                    <mat-error *ngIf="formError.password.errors?.required">Password is required</mat-error>
+                    <mat-error *ngIf="formError.password.errors?.minlength">Password length should be minimum 6 character</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input type="password" autocomplete="false" matInput placeholder="Description"formControlName="password">
+                    <mat-error *ngIf="formError.password.errors?.required">Password is required</mat-error>
+                    <mat-error *ngIf="formError.password.errors?.minlength">Password length should be minimum 6 character</mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field>
+                    <input type="email" autocomplete="true" matInput placeholder="https://example.com/any-public-url/your-img.jpg" formControlName="profileUrl">
+                </mat-form-field>
+
+                <div  class="text-center">
+                    <button type="submit" mat-raised-button color="primary"> Save </button>
+                </div>
+
+            </form>
+            <br>            
+        </mat-card>
+    </div>
+</div>
+

@@ -17,5 +17,14 @@ export class RecipeService {
    return this._http.get('https://recipebookplain-default-rtdb.firebaseio.com/container/all-recipes.json')
     }
 
+    getLoggedInUserRecipes_Firebase(userUID:string){
+      return this._http.get('https://recipebookplain-default-rtdb.firebaseio.com/container/users/' + userUID + '/myrecipes.json')
+    }
+
+    saveLoggedInUserRecipes_Firebase(userUID:string, recipe:any){ // recipe:Recipe
+      return this._http.post('https://recipebookplain-default-rtdb.firebaseio.com/container/users/' + userUID + '/myrecipes.json',recipe)
+    }
+  
+
 }
 

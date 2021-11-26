@@ -5,13 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { RecipeLayoutComponent } from './recipe-layout/recipe-layout.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { HeaderComponent } from './header/header.component';
-import { RecipeComponent } from './recipe-layout/recipe/recipe.component';
-import { RecipeModalComponent } from './recipe-layout/recipe-modal/recipe-modal.component';
+import { AuthInterceptorService } from './authentication/shared/auth-interceptor.service';
+import { MyRecipesComponent } from './recipe-layout/my-recipes/my-recipes.component';
 
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -25,8 +25,7 @@ import { RecipeModalComponent } from './recipe-layout/recipe-modal/recipe-modal.
     RecipeLayoutComponent,
     AuthenticationComponent,
     HeaderComponent,
-    RecipeComponent,
-    RecipeModalComponent  
+    MyRecipesComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +41,9 @@ import { RecipeModalComponent } from './recipe-layout/recipe-modal/recipe-modal.
 
     
   ],
-  providers: [],
+  providers: [ 
+    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptorService, multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

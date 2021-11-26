@@ -9,8 +9,12 @@ import { AuthService } from '../authentication/shared/auth.service';
 })
 export class HeaderComponent implements OnInit,OnDestroy {
 
-  userAuthSubscription : Subscription
+  userAuthSubscription : Subscription;
+  userDetailsSubscription : Subscription;
+
   isUserAuthenticated = false
+  userDetails : any= []
+
   constructor(private _authService:AuthService) { }
 
   ngOnInit(): void {
@@ -18,10 +22,20 @@ export class HeaderComponent implements OnInit,OnDestroy {
       console.log(user);
       this.isUserAuthenticated = !!user;
     })
+
+    this.userDetailsSubscription = this._authService.userDetailsBehaviorSub.subscribe(userDetails=>{ 
+      console.log(userDetails);
+      this.userDetails = userDetails;
+    })
+  }
+
+  logout(){
+    this._authService.logout()
   }
 
   ngOnDestroy(){
     this.userAuthSubscription.unsubscribe();
+    this.userDetailsSubscription.unsubscribe()
   }
 
 }

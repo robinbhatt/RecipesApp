@@ -16,6 +16,10 @@
 
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
+                <div class="text-center" *ngIf="loginForm.value.profileUrl && !loginMode">
+                    <img [src]="loginForm.value.profileUrl" width="100" height="100" class="rounded-circle">
+                </div>
+
                 <mat-form-field>
                     <input type="email" autocomplete="true" matInput placeholder="Email" formControlName="email">
                         <mat-error *ngIf="formError.email.errors?.required">Username is required</mat-error>
@@ -28,6 +32,11 @@
                     <mat-error *ngIf="formError.password.errors?.required">Password is required</mat-error>
                     <mat-error *ngIf="formError.password.errors?.minlength">Password length should be minimum 6 character</mat-error>
                 </mat-form-field>
+
+                <mat-form-field *ngIf="!loginMode">
+                    <input type="email" autocomplete="true" matInput placeholder="https://example.com/any-public-url/your-img.jpg" formControlName="profileUrl">
+                </mat-form-field>
+
 
                 <sup style="color: blue; cursor: pointer;"><small>Forgot Password ?</small></sup><br><br>
 
