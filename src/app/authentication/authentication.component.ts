@@ -39,7 +39,7 @@ export class AuthenticationComponent implements OnInit {
     this.formGroupDirective.resetForm()
   }
 
-  onSubmit() { 
+  onSubmit() {
 
     if(this.loginForm.invalid){ return; }
 
@@ -50,13 +50,11 @@ export class AuthenticationComponent implements OnInit {
     this.isLoading = true;
 
     if(this.loginMode){
-      this._authService.signInWithEmailAndPassword_Firebase(email, password, profileUrl)
+      this._authService.signInWithEmailAndPassword_Firebase(email, password)
       .pipe(
         finalize(()=> this.isLoading = false)
       )
-      .subscribe(
-        (resData)=> {
-        console.log(resData);
+      .subscribe(()=> {
         this.isLoading = false;
         this.router.navigateByUrl('/all-recipes');
       },
@@ -65,16 +63,14 @@ export class AuthenticationComponent implements OnInit {
         const errCode = err.error.error.code;
         const errMsg = err.error.error.message;
         this.responseError = `An error occured. Code : ${errCode} Message : ${errMsg}`
-      }
-       )
+      })
+
     } else {
       this._authService.signUpWithEmailAndPassword_Firebase(email, password, profileUrl)
       .pipe(
         finalize(()=> this.isLoading = false)
       )
-      .subscribe(
-        (resData)=> { 
-        console.log(resData);
+      .subscribe(()=> { 
         this.isLoading = false;
         this.router.navigateByUrl('/all-recipes');
       },
@@ -83,11 +79,10 @@ export class AuthenticationComponent implements OnInit {
         const errCode = err.error.error.code;
         const errMsg = err.error.error.message;
         this.responseError = `An error occured. Code : ${errCode} Message : ${errMsg}`
-      }
-       )
+      })
     }
 
-
   }
+
 
 }

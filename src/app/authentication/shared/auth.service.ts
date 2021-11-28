@@ -30,12 +30,12 @@ export class AuthService {
         const user = new User(userObject.email, userObject.localId, userObject.idToken, expirationDate);
         this.userBehaviorSub.next(user);
         localStorage.setItem('userData', JSON.stringify(user));
-        this.createNewUser(userObject.email,profileUrl, userObject.localId)
+        this.createNewUser(userObject.email,profileUrl, userObject.localId);
       })
     )
   }
 
-  signInWithEmailAndPassword_Firebase(email:string,password:string, profileUrl:string){
+  signInWithEmailAndPassword_Firebase(email:string,password:string){
     return this._httpService
     .post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBEEvUW1Xm8StUJK7HBBdPZSuYMEHtqh_I`,
     { email : email, password : password, returnSecureToken	: true})
@@ -45,7 +45,7 @@ export class AuthService {
         const user = new User(userObject.email, userObject.localId, userObject.idToken, expirationDate);
         this.userBehaviorSub.next(user);
         localStorage.setItem('userData', JSON.stringify(user));
-        this.createNewUser(userObject.email,profileUrl, userObject.localId);
+        this.emitUserDetails(userObject.localId)
         // this.autoLogout(111)
       })
     )
@@ -60,11 +60,7 @@ export class AuthService {
     
     if(loadedUser.token){
       this.userBehaviorSub.next(loadedUser);
-      this._httpService.get(this.baseUrl+'/'+parsedUser.id+'.json').subscribe((userDetails:any)=>{
-        const UD = Object.entries(userDetails)
-        this.userDetailsBehaviorSub.next(UD[0][1]);
-      })
-
+      this.emitUserDetails(loadedUser.id)
       // const expDuration = new Date(parsedUser._tokenExpiratonDate).getTime() - new Date().getTime();
       // this.autoLogout(expDuration)
 
@@ -78,7 +74,7 @@ export class AuthService {
 
   logout(){
     this.userBehaviorSub.next(null);
-    this.userDetailsBehaviorSub.next(null);
+    this.userDetailsBehaviorSub.next([]);
     localStorage.removeItem('userData');
     this.router.navigateByUrl('/auth');
     if(this.tokenExpTimer){
@@ -88,15 +84,15 @@ export class AuthService {
   }
 
   createNewUser(userName:string, profilePicUrl:string = this.defaultAvatar, authUserUID:string){
-  
     const user = { userName : userName, ppURL : profilePicUrl, userUID : authUserUID  };
-    console.log(user);
-    this._httpService.get(this.baseUrl+'/'+authUserUID+'.json').subscribe((res)=>{
-      console.log(res)
-      if(res == null){
-        this._httpService.post(this.baseUrl+'/'+authUserUID+'.json', user).subscribe();
-        this.userDetailsBehaviorSub.next(user);
+    this._httpService.post(this.baseUrl+'/'+authUserUID+'/userdetails.json', user).subscribe(()=>this.emitUserDetails(authUserUID))
+  }
 
+  emitUserDetails(userUID:string){
+    this._httpService.get(this.baseUrl+'/'+userUID+'/userdetails.json').subscribe((userDetails)=>{
+      if(userDetails !== null){
+        const UD = Object.entries(userDetails)
+        this.userDetailsBehaviorSub.next(UD[0][1]);
       }
     })
   }
